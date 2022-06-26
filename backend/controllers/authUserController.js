@@ -234,7 +234,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @route GET /api/v1/users
 // @access Private
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).populate({path: "transactions"}).exec()
+  const users = await User.find({}).populate('transactions').exec()
 
   res.json(users)
 })
@@ -243,7 +243,9 @@ const getUsers = asyncHandler(async (req, res) => {
 // @route GET /api/v1/users/:id
 // @access Public
 const getUsersById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).populate({path: "transactions"}).exec()
+  const user = await User.findById(req.params.id).populate('transactions').exec()
+
+  console.log(user)
 
   if (user) {
     res.json(user)
