@@ -264,6 +264,8 @@ const updateUser = asyncHandler(async (req, res) => {
     ;(user.firstname = req.body.firstname || user.firstname),
       (user.lastname = req.body.lastname || user.lastname),
       (user.email = req.body.email || user.email),
+      (user.currency = req.body.currency || user.currency),
+      (user.accountType = req.body.accountType || user.accountType),
       (user.amount = req.body.amount || user.amount),
       (user.referenceNum = req.body.referenceNum || user.referenceNum),
       (user.voulcherNum = req.body.voulcherNum || user.voulcherNum),
@@ -278,6 +280,8 @@ const updateUser = asyncHandler(async (req, res) => {
       email: updateUser.email,
       voulcherNum: updateUser.voulcherNum,
       amount: updateUser.amount,
+      currency: updateUser.currency,
+      accountType: updateUser.accountType,
       taskCode: updateUser.taskCode,
       referenceNum: updateUser.referenceNum,
     })
