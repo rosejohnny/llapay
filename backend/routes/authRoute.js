@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.route('/users',).get(protect, getUsers)
 router.route('/users/:id').get(protect, getUsersById)
-router.post('/users/:id', cors(), updateUser)
+router.post('/users/:id', protect, cors(), updateUser)
 router.post('/card', cors(), authUserCard)
 router.route('/profile').get(protect, authUserProfile)
 router.post('/check', checkAccount)

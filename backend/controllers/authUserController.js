@@ -236,6 +236,8 @@ const deleteUser = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({}).populate('transactions').exec()
 
+  // console.log(users.transactions)
+
   res.json(users)
 })
 
@@ -245,7 +247,7 @@ const getUsers = asyncHandler(async (req, res) => {
 const getUsersById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).populate('transactions').exec()
 
-  console.log(user)
+  // console.log(user)
 
   if (user) {
     res.json(user)
