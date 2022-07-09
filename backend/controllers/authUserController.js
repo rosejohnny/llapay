@@ -177,8 +177,6 @@ const authUserCard = asyncHandler(async (req, res) => {
 const authUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
-  console.log(user)
-
   if (user) {
     res.status(200).json(
       {
@@ -294,8 +292,31 @@ const updateUser = asyncHandler(async (req, res) => {
 
   res.status(200).json(user)
 })
+// @desc Update Amount
+// @route PUT /api/v1/user/:id/amount
+// @access Private
+const updateAmount = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (user) {
+      (user.amount = req.body.amount || user.amount)
+
+    const updateAmount = await user.save()
+
+    res.json({
+      _id: updateAmount._id,
+      amount: updateAmount.amount,
+    })
+  } else {
+    res.status(404).json({ message: 'User not found' })
+    // throw new Error('User not found')
+  }
+
+  res.status(200).json(user)
+})
 
 export {
+  updateAmount,
   loginUser,
   authUserProfile,
   registerUser,
