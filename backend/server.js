@@ -4,9 +4,11 @@ import dotenv  from 'dotenv'
 import colors from 'colors'
 import messageRoute from './routes/messageRoute.js'
 import authRoute from './routes/authRoute.js'
+import uploadRoute from './routes/uploadRoute.js'
 import transactionRoute from './routes/transactionRoute.js'
 import { errorHandler, notFound } from './middleware/errorMiddleware.js'
 import cors from 'cors'
+import path from 'path'
 
 
 dotenv.config()
@@ -28,6 +30,13 @@ app.get('/', (req, res) => {
 app.use('/api/v1', authRoute)
 app.use('/api/v1', messageRoute)
 app.use('/api/v1/transactions', transactionRoute)
+// app.use('/api/v1/register', uploadRoute)
+
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+
 
 app.use(notFound)
 

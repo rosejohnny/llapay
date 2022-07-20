@@ -13,7 +13,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email })
 
-  if (user) {
+  if(user.password == password) {
     res.json({
       _id: user._id,
       firstname: user.firstname,
@@ -35,11 +35,31 @@ const loginUser = asyncHandler(async (req, res) => {
       transactions: user.transactions,
       cardDetails: user.cardDetails,
       messages: user.messages,
+      password: user.password,
       token: generateToken(user._id),
     })
   } else {
     res.status(401).json({ message: 'Invalid email or password' })
-    // throw new Error('Invalid email or password')
+  }
+})
+
+
+const uploadPhoto = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  // console.log(req.headers)
+
+  if(user) {
+    (user.passport = `${req.headers.host}/${req.file.path}`)
+
+    const updatedPassport = await user.save()
+
+    res.json({
+      _id: updatedPassport._id,
+      passport: updatedPassport.passport
+    })
+  } else {
+    res.status(404).json({ message: 'User not found' })
   }
 })
 
@@ -90,7 +110,6 @@ const registerUser = asyncHandler(async (req, res) => {
     currency,
     idType,
     dob,
-    passport,
     address,
     password,
   } = req.body
@@ -114,7 +133,6 @@ const registerUser = asyncHandler(async (req, res) => {
     currency,
     idType,
     dob,
-    passport,
     address,
     password,
   })
@@ -134,7 +152,6 @@ const registerUser = asyncHandler(async (req, res) => {
       amount: user.amount,
       currency: user.currency,
       nationality: user.nationality,
-      passport: user.passport,
       password: user.password,
       address: user.address,
       voulcherNum: user.voulcherNum,
@@ -261,7 +278,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (user) {
-    ;(user.firstname = req.body.firstname || user.firstname),
+      (user.firstname = req.body.firstname || user.firstname),
       (user.lastname = req.body.lastname || user.lastname),
       (user.email = req.body.email || user.email),
       (user.currency = req.body.currency || user.currency),
@@ -326,4 +343,5 @@ export {
   deleteUser,
   updateUser,
   authUserCard,
+  uploadPhoto,
 }
