@@ -46,7 +46,7 @@ const upload = multer({
 })
 
 
-router.post('/upload', upload.single('passport'), asyncHandler(async (req, res) => {
+router.post('/upload', cors(), upload.single('passport'), asyncHandler(async (req, res) => {
   res.send(`/${req.file.path}`)
 }))
 
