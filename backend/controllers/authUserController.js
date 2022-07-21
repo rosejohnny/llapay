@@ -35,6 +35,7 @@ const loginUser = asyncHandler(async (req, res) => {
       transactions: user.transactions,
       cardDetails: user.cardDetails,
       messages: user.messages,
+      passport: user.passport,
       password: user.password,
       token: generateToken(user._id),
     })
@@ -50,7 +51,7 @@ const uploadPhoto = asyncHandler(async (req, res) => {
   // console.log(req.headers)
 
   if(user) {
-    (user.passport = `${req.headers.host}/${req.file.path}`)
+    (user.passport = req.file.path)
 
     const updatedPassport = await user.save()
 
@@ -101,6 +102,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const {
     firstname,
     lastname,
+    amount,
     email,
     title,
     accountType,
@@ -112,7 +114,10 @@ const registerUser = asyncHandler(async (req, res) => {
     dob,
     address,
     password,
+    passport
   } = req.body
+
+  console.log(req.body)
 
   const userExists = await User.findOne({ email })
 
@@ -126,6 +131,7 @@ const registerUser = asyncHandler(async (req, res) => {
     lastname,
     email,
     title,
+    amount,
     accountType,
     gender,
     phone,
@@ -135,6 +141,7 @@ const registerUser = asyncHandler(async (req, res) => {
     dob,
     address,
     password,
+    passport
   })
 
   if (user) {
@@ -153,11 +160,11 @@ const registerUser = asyncHandler(async (req, res) => {
       currency: user.currency,
       nationality: user.nationality,
       password: user.password,
+      passport: user.passport,
       address: user.address,
       voulcherNum: user.voulcherNum,
       taskCode: user.taskCode,
       referenceNum: user.referenceNum,
-      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
   } else {

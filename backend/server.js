@@ -34,7 +34,7 @@ app.use('/api/v1/transactions', transactionRoute)
 
 
 const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 
 

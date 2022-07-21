@@ -1,20 +1,24 @@
 import express from "express";
-import { loginUser, registerUser, uploadPhoto, updateAmount, authUserProfile, getUsers, authUserCard, getUsersById, checkAccount, deleteUser, updateUser } from '../controllers/authUserController.js'
+import { loginUser, registerUser, updateAmount, authUserProfile, getUsers, authUserCard, getUsersById, checkAccount, deleteUser, updateUser } from '../controllers/authUserController.js'
 import { createTransaction } from '../controllers/transController.js'
 import { protect } from '../middleware/authMiddleware.js'
 import cors from 'cors';
 import path from 'path'
 import multer from 'multer'
+import asyncHandler from 'express-async-handler'
 
 
 
 const router = express.Router()
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/')
+  destination: function(req, file, cb) {
+    cb(null, './uploads')
   },
-  filename(req, file, cb) {
+  // filename: function(req, file, cb) {
+  //   cb( null, Date.now() + file.originalname)
+  // },
+  filename: function(req, file, cb) {
     cb(
       null,
       `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
@@ -42,7 +46,9 @@ const upload = multer({
 })
 
 
-router.post('/users/:id/upload', upload.single('image'), cors(), protect, uploadPhoto)
+router.post('/upload', upload.single('passport'), asyncHandler(async (req, res) => {
+  res.send(`/${req.file.path}`)
+}))
 
 router.route('/users',).get(protect, cors(), getUsers)
 router.route('/users/:id').get(protect, cors(), getUsersById)
